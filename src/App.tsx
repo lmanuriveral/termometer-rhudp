@@ -25,6 +25,7 @@ export default function App() {
     new Array(PREGUNTAS.length).fill(null),
   );
   const [faltantes, setFaltantes] = useState<number[]>([]);
+  const [nombre, setNombre] = useState("");
   const [resultado, setResultado] = useState<Diagnosis | null>(() =>
     leerDiagnosticoGuardado(),
   );
@@ -41,6 +42,11 @@ export default function App() {
     copia[index] = value;
     setRespuestas(copia);
     setFaltantes((prev) => prev.filter((i) => i !== index));
+  };
+
+  const handleNombreChange = (value: string) => {
+    if (yaRespondio) return;
+    setNombre(value);
   };
 
   const handleCalcular = async () => {
@@ -74,6 +80,7 @@ export default function App() {
           mode: "no-cors",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({
+            nombre: nombre.trim() || null,
             respuestas,
             average: diagnostico.average,
             label: diagnostico.label,
@@ -105,12 +112,14 @@ export default function App() {
             faltantes={faltantes}
             onAnswer={handleAnswer}
             onCalcular={handleCalcular}
+            nombre={nombre}
+            onNombreChange={handleNombreChange}
           />
         )}
         <Thermometer resultado={resultado} />
       </View>
       <Text style={styles.footer}>
-        Herramienta educativa de percepción ciudadana · Los resultados son
+        Herramienta educativa de actitud ciudadana · Los resultados son
         autoreportados y no constituyen un estudio estadístico representativo.
       </Text>
     </View>

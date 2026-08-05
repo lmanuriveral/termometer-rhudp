@@ -3,6 +3,7 @@ import {
   Text,
   Pressable,
   ScrollView,
+  TextInput,
   StyleSheet,
   useWindowDimensions,
 } from "react-native-web";
@@ -12,6 +13,8 @@ import type { Answer } from "../types";
 interface Props {
   respuestas: Answer[];
   faltantes: number[];
+  nombre: string;
+  onNombreChange: (value: string) => void;
   onAnswer: (index: number, value: number) => void;
   onCalcular: () => void;
 }
@@ -27,6 +30,8 @@ const COLOR_POR_VALOR: Record<number, "frio" | "tibio" | "caliente"> = {
 export default function SurveyForm({
   respuestas,
   faltantes,
+  nombre,
+  onNombreChange,
   onAnswer,
   onCalcular,
 }: Props) {
@@ -46,6 +51,19 @@ export default function SurveyForm({
         height: 0;
       }
     `}</style>
+
+      <View style={styles.nameBlock}>
+        <Text style={styles.nameLabel}>
+          ¿Cómo te quieres llamar? <Text style={styles.nameOptional}>(opcional)</Text>
+        </Text>
+        <TextInput
+          value={nombre}
+          onChangeText={onNombreChange}
+          placeholder="Escribe aquí si quieres aparecer con un nombre"
+          style={styles.nameInput}
+        />
+      </View>
+
       <ScrollView style={styles.scroll} nativeID="survey-scroll">
         {" "}
         {PREGUNTAS.map((texto, i) => {
@@ -106,7 +124,7 @@ export default function SurveyForm({
           <Text
             style={[styles.btnPrimaryText, !completo && styles.btnTextDisabled]}
           >
-            Calcular Percepción
+            Calcular Actitud
           </Text>
         </Pressable>
       </View>
@@ -124,6 +142,34 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     maxHeight: "calc(100dvh - 415px)",
     overflow: "hidden",
+  },
+  nameBlock: {
+    paddingTop: 22,
+    paddingBottom: 18,
+    paddingLeft: 28,
+    paddingRight: 28,
+    borderBottom: "1px solid var(--line)",
+  },
+  nameLabel: {
+    fontSize: 13.5,
+    fontWeight: "600",
+    marginBottom: 8,
+    color: "var(--ink)",
+  },
+  nameOptional: {
+    fontWeight: "400",
+    color: "var(--ink-soft)",
+  },
+  nameInput: {
+    border: "1.5px solid var(--line)",
+    borderRadius: 10,
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: 14,
+    paddingRight: 14,
+    fontSize: 14.5,
+    backgroundColor: "#fefcfb",
+    outlineStyle: "none",
   },
   scroll: {
     flex: 1,

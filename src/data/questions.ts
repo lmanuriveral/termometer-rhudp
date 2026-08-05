@@ -1,6 +1,6 @@
 import type { Diagnosis } from "../types";
 
-export const TEMA = "Percepción sobre los derechos menstruales en Colombia";
+export const TEMA = "Actitud sobre los derechos menstruales en Colombia";
 
 export const PREGUNTAS: string[] = [
   "En mis entornos cotidianos (familia, estudio o trabajo), se puede hablar de la menstruación sin que se genere incomodidad o tensión.",
@@ -23,10 +23,10 @@ export const ETIQUETAS: Record<number, string> = {
 
 export function clasificar(promedio: number): Omit<Diagnosis, "average"> {
   if (promedio <= 2.4) {
-    return { colorKey: "frio", label: "Rechazo / Percepción desfavorable" };
+    return { colorKey: "frio", label: "Rechazo / Actitud desfavorable" };
   } else if (promedio <= 3.5) {
-    return { colorKey: "tibio", label: "Neutral / Percepción tibia" };
+    return { colorKey: "tibio", label: "Neutral / Actitud media" };
   } else {
-    return { colorKey: "caliente", label: "Aprobación / Percepción favorable" };
+    return { colorKey: "caliente", label: "Aprobación / Actitud favorable" };
   }
 }

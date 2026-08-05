@@ -7,19 +7,19 @@ export default function Header() {
   return (
     <View style={[styles.hero, isMobile && styles.heroMobile]}>
       <View style={styles.eyebrowRow}>
-        <Text style={styles.eyebrow}>Instrumento de percepción · 8 ítems</Text>
+        <Text style={styles.eyebrow}>Instrumento de actitud · 8 ítems</Text>
       </View>
       <View style={styles.eyebrowRow}>
         <Text style={[styles.h1, isMobile && styles.h1Mobile]}>
-          ¿Qué tan <Text style={styles.em}>caliente</Text> está la conversación
-          sobre derechos menstruales en Colombia?
+          ¿Qué tan <Text style={styles.em}>favorable</Text> es tu postura
+          frente a los derechos menstruales en Colombia?
         </Text>
       </View>
       <Text style={[styles.lede, isMobile && styles.ledeMobile]}>
         Responde cada afirmación según tu nivel de acuerdo. Al calcular, tu promedio se traduce en
-        un termómetro: <Text style={styles.tagFrio}>azul</Text> es rechazo,{" "}
-        <Text style={styles.tagTibio}>ámbar</Text> es neutralidad,{" "}
-        <Text style={styles.tagCaliente}>violeta intenso</Text> es aprobación total.
+        un termómetro: <Text style={styles.tagFrio}>azul</Text> es desfavorable,{" "}
+        <Text style={styles.tagTibio}>ámbar</Text> es neutral,{" "}
+        <Text style={styles.tagCaliente}>violeta intenso</Text> es totalmente favorable.
       </Text>
     </View>
   );

@@ -60,7 +60,7 @@ export default function Thermometer({ resultado }: Props) {
 
   return (
     <View style={styles.thermoPanel}>
-      <Text style={styles.title}>Termómetro de percepción</Text>
+      <Text style={styles.title}>Termómetro de actitud</Text>
       <Text style={styles.sub}>Se activa al calcular tu resultado</Text>
 
       <View style={styles.instrument}>
@@ -138,7 +138,7 @@ export default function Thermometer({ resultado }: Props) {
                 fontWeight: "700",
               }}
             >
-              Percepción: {resultado.label.split(" / ")[1] || resultado.label}
+              Postura: {resultado.label.split(" / ")[1] || resultado.label}
             </Text>
           </View>
         )}
@@ -147,8 +147,8 @@ export default function Thermometer({ resultado }: Props) {
       {!resultado && (
         <Text style={styles.emptyState}>
           Responde las 8 afirmaciones y presiona{" "}
-          <Text style={{ fontWeight: "700" }}>Calcular Percepción</Text> para
-          ver tu resultado.
+          <Text style={{ fontWeight: "700" }}>Calcular Actitud</Text> para ver
+          tu resultado.
         </Text>
       )}
     </View>
@@ -186,6 +186,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
     justifyContent: "center",
     gap: 14,
+    marginLeft: -100,
     width: "100%",
   },
   ticks: {
@@ -261,8 +262,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     display: "flex",
     flexDirection: "column",
-    alignItems: "center",
     gap: 8,
+    alignItems: "center",
     width: "100%",
   },
   value: {
