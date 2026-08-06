@@ -60,7 +60,7 @@ export default function Thermometer({ resultado }: Props) {
 
   return (
     <View style={styles.thermoPanel}>
-      <Text style={styles.title}>Termómetro de actitud</Text>
+      <Text style={styles.title}>Termómetro menstrual</Text>
       <Text style={styles.sub}>Se activa al calcular tu resultado</Text>
 
       <View style={styles.instrument}>

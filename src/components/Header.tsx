@@ -7,7 +7,7 @@ export default function Header() {
   return (
     <View style={[styles.hero, isMobile && styles.heroMobile]}>
       <View style={styles.eyebrowRow}>
-        <Text style={styles.eyebrow}>Instrumento de actitud · 10 ítems</Text>
+        <Text style={styles.eyebrow}>Termometro del entorno - Condiciones favorables o desfavorables · 10 ítems</Text>
       </View>
       <View style={styles.eyebrowRow}>
         <Text style={[styles.h1, isMobile && styles.h1Mobile]}>
