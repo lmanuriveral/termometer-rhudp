@@ -3,16 +3,16 @@ import type { Diagnosis } from "../types";
 export const TEMA = "Actitud sobre los derechos menstruales en Colombia";
 
 export const PREGUNTAS: string[] = [
-  "En mis entornos cotidianos (familia, estudio o trabajo), se puede hablar de la menstruación sin que se genere incomodidad o tensión.",
-  "Las instalaciones sanitarias de mi entorno educativo o laboral cuentan con agua potable y condiciones seguras para gestionar la menstruación.",
-  "Cuento con la información y la libertad necesarias para elegir de manera autónoma los productos o métodos con los que gestiono mi menstruación.",
-  "Ver una mancha de sangre menstrual en la ropa de alguien suele interpretarse en mi entorno como un descuido o falta de higiene.",
-  "Los productos de higiene menstrual (toallas, tampones, copas) deben considerarse bienes esenciales exentos de impuestos.",
-  "Mis espacios de estudio o trabajo me permiten ajustar mi ritmo de actividades según las necesidades de mi ciclo menstrual.",
-  "Las políticas públicas actuales garantizan de manera adecuada los derechos menstruales de las mujeres rurales y de escasos recursos.",
-  "Apoyo que el Estado colombiano invierta más recursos en programas de salud y menstruación digna.",
-  "Las políticas públicas actuales garantizan de manera adecuada los derechos menstruales de las mujeres rurales y de escasos recursos.",
-  "Apoyo que el Estado colombiano invierta más recursos en programas de salud y menstruación digna.",
+  "Ver la menstruación como un tema de derechos ayuda a que la sociedad la entienda mejor.",
+  "Conozco las leyes o normas que existen en Colombia sobre derechos y productos menstruales.",
+  "Siento que tengo la información y la libertad para elegir cómo gestionar mi menstruación.",
+  "En la USCO he visto o participado en charlas, talleres o espacios sobre educación menstrual o sexual.",
+  "Me siento con la tranquilidad de hablar de mi periodo con profes o compañeros en la universidad, sin que nadie se incomode.",
+  "Las condiciones en la USCO me permiten cumplir con mis clases normalmente durante los días de mi periodo.",
+  "Los baños de la USCO (agua, privacidad, aseo) están en buen estado para gestionar la menstruación sin problemas.",
+  "Sé identificar claramente cuándo un dolor o síntoma menstrual es normal y cuándo requiere ir al médico.",
+  "Si alguien se mancha la ropa en mi entorno, la gente reacciona con naturalidad y sin juzgar.",
+  "Me parece totalmente normal que alguien exprese en plena clase que necesita atender algo de su periodo.",
 ];
 
 export const ETIQUETAS: Record<number, string> = {
