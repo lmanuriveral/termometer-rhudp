@@ -56,15 +56,15 @@ export default function App() {
   const [resultado, setResultado] = useState<Diagnosis | null>(() =>
     leerDiagnosticoGuardado(),
   );
-  const [yaRespondio, setYaRespondio] = useState<boolean>(
-    () => leerDiagnosticoGuardado() !== null,
-  );
+  // const [yaRespondio, setYaRespondio] = useState<boolean>(
+  //   () => leerDiagnosticoGuardado() !== null,
+  // );
 
   const { width } = useWindowDimensions();
   const isMobile = width < 800;
 
   const handleAnswer = (index: number, value: number) => {
-    if (yaRespondio) return;
+    // if (yaRespondio) return;
     const copia = [...respuestas];
     copia[index] = value;
     setRespuestas(copia);
@@ -72,25 +72,25 @@ export default function App() {
   };
 
   const handleNombreChange = (value: string) => {
-    if (yaRespondio) return;
+    // if (yaRespondio) return;
     setNombre(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "nombre"));
   };
 
   const handleApellidoChange = (value: string) => {
-    if (yaRespondio) return;
+    // if (yaRespondio) return;
     setApellido(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "apellido"));
   };
 
   const handleAnioNacimientoChange = (value: string) => {
-    if (yaRespondio) return;
+    // if (yaRespondio) return;
     setAnioNacimiento(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "anioNacimiento"));
   };
 
   const handleCalcular = async () => {
-    if (yaRespondio) return;
+    // if (yaRespondio) return;
 
     const vacios = respuestas
       .map((r, i) => (r === null ? i : -1))
@@ -148,7 +148,7 @@ export default function App() {
     <View style={styles.root}>
       <Header />
       <View style={[styles.main, isMobile && styles.mainMobile]}>
-        {yaRespondio ? (
+        {/* {yaRespondio ? (
           <View style={styles.yaRespondio}>
             <Text style={styles.yaRespondioTitle}>
               Ya registramos tu respuesta
@@ -172,7 +172,20 @@ export default function App() {
             onApellidoChange={handleApellidoChange}
             onAnioNacimientoChange={handleAnioNacimientoChange}
           />
-        )}
+          )} */}
+        <SurveyForm
+          respuestas={respuestas}
+          faltantes={faltantes}
+          camposFaltantes={camposFaltantes}
+          onAnswer={handleAnswer}
+          onCalcular={handleCalcular}
+          nombre={nombre}
+          apellido={apellido}
+          anioNacimiento={anioNacimiento}
+          onNombreChange={handleNombreChange}
+          onApellidoChange={handleApellidoChange}
+          onAnioNacimientoChange={handleAnioNacimientoChange}
+        />
         <Thermometer resultado={resultado} />
       </View>
       <Text style={styles.footer}>
