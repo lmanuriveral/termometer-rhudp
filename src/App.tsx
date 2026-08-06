@@ -20,12 +20,39 @@ function leerDiagnosticoGuardado(): Diagnosis | null {
   }
 }
 
+// Primera letra en mayúscula de un texto, ej: "manuela" -> "M"
+function inicialMayuscula(texto: string): string {
+  const limpio = texto.trim();
+  if (!limpio) return "";
+  return limpio.charAt(0).toUpperCase();
+}
+
+// Construye el código: inicial del nombre + inicial del apellido + año.
+// Ej: nombre="Manuela", apellido="Rivera", anio="2002" -> "MR2002"
+function formatearCodigo(
+  nombre: string,
+  apellido: string,
+  anio: string,
+): string {
+  return `${inicialMayuscula(nombre)}${inicialMayuscula(apellido)}${anio.trim()}`;
+}
+
+function anioEsValido(anio: string): boolean {
+  if (!/^\d{4}$/.test(anio.trim())) return false;
+  const n = parseInt(anio.trim(), 10);
+  const anioActual = new Date().getFullYear();
+  return n >= 1900 && n <= anioActual;
+}
+
 export default function App() {
   const [respuestas, setRespuestas] = useState<Answer[]>(
     new Array(PREGUNTAS.length).fill(null),
   );
   const [faltantes, setFaltantes] = useState<number[]>([]);
   const [nombre, setNombre] = useState("");
+  const [apellido, setApellido] = useState("");
+  const [anioNacimiento, setAnioNacimiento] = useState("");
+  const [camposFaltantes, setCamposFaltantes] = useState<string[]>([]);
   const [resultado, setResultado] = useState<Diagnosis | null>(() =>
     leerDiagnosticoGuardado(),
   );
@@ -47,6 +74,19 @@ export default function App() {
   const handleNombreChange = (value: string) => {
     if (yaRespondio) return;
     setNombre(value);
+    setCamposFaltantes((prev) => prev.filter((c) => c !== "nombre"));
+  };
+
+  const handleApellidoChange = (value: string) => {
+    if (yaRespondio) return;
+    setApellido(value);
+    setCamposFaltantes((prev) => prev.filter((c) => c !== "apellido"));
+  };
+
+  const handleAnioNacimientoChange = (value: string) => {
+    if (yaRespondio) return;
+    setAnioNacimiento(value);
+    setCamposFaltantes((prev) => prev.filter((c) => c !== "anioNacimiento"));
   };
 
   const handleCalcular = async () => {
@@ -55,10 +95,20 @@ export default function App() {
     const vacios = respuestas
       .map((r, i) => (r === null ? i : -1))
       .filter((i) => i !== -1);
-    if (vacios.length > 0) {
+
+    const camposVacios: string[] = [];
+    if (!nombre.trim()) camposVacios.push("nombre");
+    if (!apellido.trim()) camposVacios.push("apellido");
+    if (!anioNacimiento.trim() || !anioEsValido(anioNacimiento)) {
+      camposVacios.push("anioNacimiento");
+    }
+
+    if (vacios.length > 0 || camposVacios.length > 0) {
       setFaltantes(vacios);
+      setCamposFaltantes(camposVacios);
       return;
     }
+
     const suma = respuestas.reduce<number>((acc, v) => acc + (v ?? 0), 0);
     const promedio = suma / PREGUNTAS.length;
     const { colorKey, label } = clasificar(promedio);
@@ -69,18 +119,20 @@ export default function App() {
     };
     setResultado(diagnostico);
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(diagnostico));
-    setYaRespondio(true);
+    // localStorage.setItem(STORAGE_KEY, JSON.stringify(diagnostico));
+    // setYaRespondio(true);
 
     const endpoint = import.meta.env.VITE_SHEET_ENDPOINT;
     if (endpoint) {
+      const codigo = formatearCodigo(nombre, apellido, anioNacimiento);
+
       try {
         await fetch(endpoint, {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({
-            nombre: nombre.trim() || null,
+            nombre: codigo,
             respuestas,
             average: diagnostico.average,
             label: diagnostico.label,
@@ -110,10 +162,15 @@ export default function App() {
           <SurveyForm
             respuestas={respuestas}
             faltantes={faltantes}
+            camposFaltantes={camposFaltantes}
             onAnswer={handleAnswer}
             onCalcular={handleCalcular}
             nombre={nombre}
+            apellido={apellido}
+            anioNacimiento={anioNacimiento}
             onNombreChange={handleNombreChange}
+            onApellidoChange={handleApellidoChange}
+            onAnioNacimientoChange={handleAnioNacimientoChange}
           />
         )}
         <Thermometer resultado={resultado} />

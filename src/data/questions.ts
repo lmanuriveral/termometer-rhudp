@@ -11,6 +11,8 @@ export const PREGUNTAS: string[] = [
   "Mis espacios de estudio o trabajo me permiten ajustar mi ritmo de actividades según las necesidades de mi ciclo menstrual.",
   "Las políticas públicas actuales garantizan de manera adecuada los derechos menstruales de las mujeres rurales y de escasos recursos.",
   "Apoyo que el Estado colombiano invierta más recursos en programas de salud y menstruación digna.",
+  "Las políticas públicas actuales garantizan de manera adecuada los derechos menstruales de las mujeres rurales y de escasos recursos.",
+  "Apoyo que el Estado colombiano invierta más recursos en programas de salud y menstruación digna.",
 ];
 
 export const ETIQUETAS: Record<number, string> = {

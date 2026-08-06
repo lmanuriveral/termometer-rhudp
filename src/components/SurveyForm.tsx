@@ -14,7 +14,12 @@ interface Props {
   respuestas: Answer[];
   faltantes: number[];
   nombre: string;
+  apellido: string;
+  anioNacimiento: string;
+  camposFaltantes: string[];
   onNombreChange: (value: string) => void;
+  onApellidoChange: (value: string) => void;
+  onAnioNacimientoChange: (value: string) => void;
   onAnswer: (index: number, value: number) => void;
   onCalcular: () => void;
 }
@@ -31,7 +36,12 @@ export default function SurveyForm({
   respuestas,
   faltantes,
   nombre,
+  apellido,
+  anioNacimiento,
+  camposFaltantes,
   onNombreChange,
+  onApellidoChange,
+  onAnioNacimientoChange,
   onAnswer,
   onCalcular,
 }: Props) {
@@ -40,7 +50,10 @@ export default function SurveyForm({
 
   const completo =
     respuestas.length === PREGUNTAS.length &&
-    respuestas.every((r) => r !== undefined && r !== null);
+    respuestas.every((r) => r !== undefined && r !== null) &&
+    nombre.trim().length > 0 &&
+    apellido.trim().length > 0 &&
+    anioNacimiento.trim().length > 0;
 
   return (
     <View style={styles.card}>
@@ -54,13 +67,47 @@ export default function SurveyForm({
 
       <View style={styles.nameBlock}>
         <Text style={styles.nameLabel}>
-          ¿Cómo te quieres llamar? <Text style={styles.nameOptional}>(opcional)</Text>
+          Primer Nombre <Text style={styles.required}>*</Text>
         </Text>
         <TextInput
           value={nombre}
           onChangeText={onNombreChange}
-          placeholder="Escribe aquí si quieres aparecer con un nombre"
-          style={styles.nameInput}
+          placeholder="Escribe tu nombre"
+          style={[
+            styles.nameInput,
+            camposFaltantes.includes("nombre") && styles.nameInputMissing,
+          ]}
+        />
+      </View>
+      <View style={styles.nameBlock}>
+        <Text style={styles.nameLabel}>
+          Primer Apellido <Text style={styles.required}>*</Text>
+        </Text>
+        <TextInput
+          value={apellido}
+          onChangeText={onApellidoChange}
+          placeholder="Escribe tu primer apellido"
+          style={[
+            styles.nameInput,
+            camposFaltantes.includes("apellido") && styles.nameInputMissing,
+          ]}
+        />
+      </View>
+      <View style={styles.nameBlock}>
+        <Text style={styles.nameLabel}>
+          Año de nacimiento <Text style={styles.required}>*</Text>
+        </Text>
+        <TextInput
+          value={anioNacimiento}
+          onChangeText={onAnioNacimientoChange}
+          placeholder="AAAA"
+          keyboardType="numeric"
+          maxLength={4}
+          style={[
+            styles.nameInput,
+            camposFaltantes.includes("anioNacimiento") &&
+              styles.nameInputMissing,
+          ]}
         />
       </View>
 
@@ -118,8 +165,7 @@ export default function SurveyForm({
       <View style={styles.actions}>
         <Pressable
           style={[styles.btnPrimary, !completo && styles.btnDisabled]}
-          onPress={completo ? onCalcular : undefined}
-          disabled={!completo}
+          onPress={onCalcular}
         >
           <Text
             style={[styles.btnPrimaryText, !completo && styles.btnTextDisabled]}
@@ -140,7 +186,7 @@ const styles = StyleSheet.create({
     boxShadow: "var(--shadow)",
     display: "flex",
     flexDirection: "column",
-    maxHeight: "calc(100dvh - 415px)",
+    maxHeight: "calc(100dvh - 30px)",
     overflow: "hidden",
   },
   nameBlock: {
@@ -156,9 +202,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: "var(--ink)",
   },
-  nameOptional: {
-    fontWeight: "400",
-    color: "var(--ink-soft)",
+  required: {
+    color: "var(--caliente)",
+    fontWeight: "700",
   },
   nameInput: {
     border: "1.5px solid var(--line)",
@@ -170,6 +216,10 @@ const styles = StyleSheet.create({
     fontSize: 14.5,
     backgroundColor: "#fefcfb",
     outlineStyle: "none",
+  },
+  nameInputMissing: {
+    borderColor: "var(--caliente)",
+    backgroundColor: "var(--caliente-soft)",
   },
   scroll: {
     flex: 1,
