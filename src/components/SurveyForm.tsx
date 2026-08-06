@@ -63,7 +63,7 @@ export default function SurveyForm({
           <TextInput
             value={codigo}
             onChangeText={onCodigoChange}
-            placeholder="Ej: TS1989"
+            placeholder="Ej: JP1989"
             autoCapitalize="characters"
             maxLength={6}
             style={[
@@ -73,8 +73,8 @@ export default function SurveyForm({
           />
           <Text style={styles.helperText}>
             Compón tu código así: inicial de tu primer nombre + inicial de tu
-            primer apellido + año de nacimiento (4 dígitos). Ejemplo: Taylor
-            Swift, nacida en 1989 → TS1989
+            primer apellido + año de nacimiento (4 dígitos). Ejemplo: Juana
+            Perez, nacida en 1989 → TS1989
           </Text>
         </View>{" "}
         {PREGUNTAS.map((texto, i) => {

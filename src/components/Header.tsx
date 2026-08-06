@@ -7,19 +7,24 @@ export default function Header() {
   return (
     <View style={[styles.hero, isMobile && styles.heroMobile]}>
       <View style={styles.eyebrowRow}>
-        <Text style={styles.eyebrow}>Termometro del entorno - Condiciones favorables o desfavorables · 10 ítems</Text>
+        <Text style={styles.eyebrow}>
+          Termometro del entorno - Condiciones favorables o desfavorables · 10
+          ítems
+        </Text>
       </View>
       <View style={styles.eyebrowRow}>
         <Text style={[styles.h1, isMobile && styles.h1Mobile]}>
-          ¿Qué tan <Text style={styles.em}>favorable</Text> es tu postura
-          frente a los derechos menstruales en Colombia?
+          ¿Qué tan <Text style={styles.em}>favorables</Text> son las condiciones
+          para ejercer los derechos menstruales en nuestro entorno?
         </Text>
       </View>
       <Text style={[styles.lede, isMobile && styles.ledeMobile]}>
-        Responde cada afirmación según tu nivel de acuerdo. Al calcular, tu promedio se traduce en
-        un termómetro: <Text style={styles.tagFrio}>azul</Text> es desfavorable,{" "}
+        Responde cada afirmación según tu nivel de acuerdo. Al calcular, tu
+        promedio se traduce en un termómetro:{" "}
+        <Text style={styles.tagFrio}>azul</Text> es desfavorable,{" "}
         <Text style={styles.tagTibio}>ámbar</Text> es neutral,{" "}
-        <Text style={styles.tagCaliente}>violeta intenso</Text> es totalmente favorable.
+        <Text style={styles.tagCaliente}>violeta intenso</Text> es totalmente
+        favorable.
       </Text>
     </View>
   );
