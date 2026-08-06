@@ -65,54 +65,52 @@ export default function SurveyForm({
       }
     `}</style>
 
-      <View style={styles.nameBlock}>
-        <Text style={styles.nameLabel}>
-          Primer Nombre <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          value={nombre}
-          onChangeText={onNombreChange}
-          placeholder="Escribe tu nombre"
-          style={[
-            styles.nameInput,
-            camposFaltantes.includes("nombre") && styles.nameInputMissing,
-          ]}
-        />
-      </View>
-      <View style={styles.nameBlock}>
-        <Text style={styles.nameLabel}>
-          Primer Apellido <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          value={apellido}
-          onChangeText={onApellidoChange}
-          placeholder="Escribe tu primer apellido"
-          style={[
-            styles.nameInput,
-            camposFaltantes.includes("apellido") && styles.nameInputMissing,
-          ]}
-        />
-      </View>
-      <View style={styles.nameBlock}>
-        <Text style={styles.nameLabel}>
-          Año de nacimiento <Text style={styles.required}>*</Text>
-        </Text>
-        <TextInput
-          value={anioNacimiento}
-          onChangeText={onAnioNacimientoChange}
-          placeholder="AAAA"
-          keyboardType="numeric"
-          maxLength={4}
-          style={[
-            styles.nameInput,
-            camposFaltantes.includes("anioNacimiento") &&
-              styles.nameInputMissing,
-          ]}
-        />
-      </View>
-
       <ScrollView style={styles.scroll} nativeID="survey-scroll">
-        {" "}
+        <View style={styles.nameBlock}>
+          <Text style={styles.nameLabel}>
+            Primer Nombre <Text style={styles.required}>*</Text>
+          </Text>
+          <TextInput
+            value={nombre}
+            onChangeText={onNombreChange}
+            placeholder="Escribe tu nombre"
+            style={[
+              styles.nameInput,
+              camposFaltantes.includes("nombre") && styles.nameInputMissing,
+            ]}
+          />
+        </View>
+        <View style={styles.nameBlock}>
+          <Text style={styles.nameLabel}>
+            Primer Apellido <Text style={styles.required}>*</Text>
+          </Text>
+          <TextInput
+            value={apellido}
+            onChangeText={onApellidoChange}
+            placeholder="Escribe tu primer apellido"
+            style={[
+              styles.nameInput,
+              camposFaltantes.includes("apellido") && styles.nameInputMissing,
+            ]}
+          />
+        </View>
+        <View style={styles.nameBlock}>
+          <Text style={styles.nameLabel}>
+            Año de nacimiento <Text style={styles.required}>*</Text>
+          </Text>
+          <TextInput
+            value={anioNacimiento}
+            onChangeText={onAnioNacimientoChange}
+            placeholder="AAAA"
+            keyboardType="numeric"
+            maxLength={4}
+            style={[
+              styles.nameInput,
+              camposFaltantes.includes("anioNacimiento") &&
+                styles.nameInputMissing,
+            ]}
+          />
+        </View>{" "}
         {PREGUNTAS.map((texto, i) => {
           const missing = faltantes.includes(i);
           return (
