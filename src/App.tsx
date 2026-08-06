@@ -7,19 +7,6 @@ import { PREGUNTAS, clasificar } from "./data/questions";
 import type { Answer, Diagnosis } from "./types";
 import "./App.css";
 
-const STORAGE_KEY = "encuesta_respondida_v1";
-
-function leerDiagnosticoGuardado(): Diagnosis | null {
-  const guardado = localStorage.getItem(STORAGE_KEY);
-  if (!guardado) return null;
-  try {
-    return JSON.parse(guardado) as Diagnosis;
-  } catch {
-    localStorage.removeItem(STORAGE_KEY);
-    return null;
-  }
-}
-
 // Primera letra en mayúscula de un texto, ej: "manuela" -> "M"
 function inicialMayuscula(texto: string): string {
   const limpio = texto.trim();
@@ -53,18 +40,19 @@ export default function App() {
   const [apellido, setApellido] = useState("");
   const [anioNacimiento, setAnioNacimiento] = useState("");
   const [camposFaltantes, setCamposFaltantes] = useState<string[]>([]);
-  const [resultado, setResultado] = useState<Diagnosis | null>(() =>
-    leerDiagnosticoGuardado(),
-  );
-  // const [yaRespondio, setYaRespondio] = useState<boolean>(
-  //   () => leerDiagnosticoGuardado() !== null,
-  // );
+  const [resultado, setResultado] = useState<Diagnosis | null>(null);
+
+  // Solo vive en memoria (useState), nunca se guarda en localStorage.
+  // Así, al recargar la página o abrirla de nuevo (ej. en la próxima
+  // sesión del programa en vivo), el formulario vuelve a estar vacío
+  // y disponible para responder otra vez.
+  const [yaRespondio, setYaRespondio] = useState(false);
 
   const { width } = useWindowDimensions();
   const isMobile = width < 800;
 
   const handleAnswer = (index: number, value: number) => {
-    // if (yaRespondio) return;
+    if (yaRespondio) return;
     const copia = [...respuestas];
     copia[index] = value;
     setRespuestas(copia);
@@ -72,25 +60,25 @@ export default function App() {
   };
 
   const handleNombreChange = (value: string) => {
-    // if (yaRespondio) return;
+    if (yaRespondio) return;
     setNombre(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "nombre"));
   };
 
   const handleApellidoChange = (value: string) => {
-    // if (yaRespondio) return;
+    if (yaRespondio) return;
     setApellido(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "apellido"));
   };
 
   const handleAnioNacimientoChange = (value: string) => {
-    // if (yaRespondio) return;
+    if (yaRespondio) return;
     setAnioNacimiento(value);
     setCamposFaltantes((prev) => prev.filter((c) => c !== "anioNacimiento"));
   };
 
   const handleCalcular = async () => {
-    // if (yaRespondio) return;
+    if (yaRespondio) return;
 
     const vacios = respuestas
       .map((r, i) => (r === null ? i : -1))
@@ -119,8 +107,9 @@ export default function App() {
     };
     setResultado(diagnostico);
 
-    // localStorage.setItem(STORAGE_KEY, JSON.stringify(diagnostico));
-    // setYaRespondio(true);
+    // Marca la sesión actual como respondida (solo en memoria).
+    // No se persiste en localStorage a propósito.
+    setYaRespondio(true);
 
     const endpoint = import.meta.env.VITE_SHEET_ENDPOINT;
     if (endpoint) {
@@ -148,14 +137,14 @@ export default function App() {
     <View style={styles.root}>
       <Header />
       <View style={[styles.main, isMobile && styles.mainMobile]}>
-        {/* {yaRespondio ? (
+        {yaRespondio ? (
           <View style={styles.yaRespondio}>
             <Text style={styles.yaRespondioTitle}>
               Ya registramos tu respuesta
             </Text>
             <Text style={styles.yaRespondioText}>
               Gracias por participar. Esta encuesta solo permite una respuesta
-              por persona.
+              por persona en esta sesión.
             </Text>
           </View>
         ) : (
@@ -172,20 +161,7 @@ export default function App() {
             onApellidoChange={handleApellidoChange}
             onAnioNacimientoChange={handleAnioNacimientoChange}
           />
-          )} */}
-        <SurveyForm
-          respuestas={respuestas}
-          faltantes={faltantes}
-          camposFaltantes={camposFaltantes}
-          onAnswer={handleAnswer}
-          onCalcular={handleCalcular}
-          nombre={nombre}
-          apellido={apellido}
-          anioNacimiento={anioNacimiento}
-          onNombreChange={handleNombreChange}
-          onApellidoChange={handleApellidoChange}
-          onAnioNacimientoChange={handleAnioNacimientoChange}
-        />
+        )}
         <Thermometer resultado={resultado} />
       </View>
       <Text style={styles.footer}>
