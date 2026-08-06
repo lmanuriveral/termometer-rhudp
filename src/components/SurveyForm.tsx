@@ -13,13 +13,9 @@ import type { Answer } from "../types";
 interface Props {
   respuestas: Answer[];
   faltantes: number[];
-  nombre: string;
-  apellido: string;
-  anioNacimiento: string;
+  codigo: string;
   camposFaltantes: string[];
-  onNombreChange: (value: string) => void;
-  onApellidoChange: (value: string) => void;
-  onAnioNacimientoChange: (value: string) => void;
+  onCodigoChange: (value: string) => void;
   onAnswer: (index: number, value: number) => void;
   onCalcular: () => void;
 }
@@ -35,13 +31,9 @@ const COLOR_POR_VALOR: Record<number, "frio" | "tibio" | "caliente"> = {
 export default function SurveyForm({
   respuestas,
   faltantes,
-  nombre,
-  apellido,
-  anioNacimiento,
+  codigo,
   camposFaltantes,
-  onNombreChange,
-  onApellidoChange,
-  onAnioNacimientoChange,
+  onCodigoChange,
   onAnswer,
   onCalcular,
 }: Props) {
@@ -51,9 +43,7 @@ export default function SurveyForm({
   const completo =
     respuestas.length === PREGUNTAS.length &&
     respuestas.every((r) => r !== undefined && r !== null) &&
-    nombre.trim().length > 0 &&
-    apellido.trim().length > 0 &&
-    anioNacimiento.trim().length > 0;
+    codigo.trim().length > 0;
 
   return (
     <View style={styles.card}>
@@ -68,48 +58,24 @@ export default function SurveyForm({
       <ScrollView style={styles.scroll} nativeID="survey-scroll">
         <View style={styles.nameBlock}>
           <Text style={styles.nameLabel}>
-            Primer Nombre <Text style={styles.required}>*</Text>
+            Código <Text style={styles.required}>*</Text>
           </Text>
           <TextInput
-            value={nombre}
-            onChangeText={onNombreChange}
-            placeholder="Escribe tu nombre"
+            value={codigo}
+            onChangeText={onCodigoChange}
+            placeholder="Ej: TS1989"
+            autoCapitalize="characters"
+            maxLength={6}
             style={[
               styles.nameInput,
-              camposFaltantes.includes("nombre") && styles.nameInputMissing,
+              camposFaltantes.includes("codigo") && styles.nameInputMissing,
             ]}
           />
-        </View>
-        <View style={styles.nameBlock}>
-          <Text style={styles.nameLabel}>
-            Primer Apellido <Text style={styles.required}>*</Text>
+          <Text style={styles.helperText}>
+            Compón tu código así: inicial de tu primer nombre + inicial de tu
+            primer apellido + año de nacimiento (4 dígitos). Ejemplo: Taylor
+            Swift, nacida en 1989 → TS1989
           </Text>
-          <TextInput
-            value={apellido}
-            onChangeText={onApellidoChange}
-            placeholder="Escribe tu primer apellido"
-            style={[
-              styles.nameInput,
-              camposFaltantes.includes("apellido") && styles.nameInputMissing,
-            ]}
-          />
-        </View>
-        <View style={styles.nameBlock}>
-          <Text style={styles.nameLabel}>
-            Año de nacimiento <Text style={styles.required}>*</Text>
-          </Text>
-          <TextInput
-            value={anioNacimiento}
-            onChangeText={onAnioNacimientoChange}
-            placeholder="AAAA"
-            keyboardType="numeric"
-            maxLength={4}
-            style={[
-              styles.nameInput,
-              camposFaltantes.includes("anioNacimiento") &&
-                styles.nameInputMissing,
-            ]}
-          />
         </View>{" "}
         {PREGUNTAS.map((texto, i) => {
           const missing = faltantes.includes(i);
@@ -218,6 +184,12 @@ const styles = StyleSheet.create({
   nameInputMissing: {
     borderColor: "var(--caliente)",
     backgroundColor: "var(--caliente-soft)",
+  },
+  helperText: {
+    fontSize: 12,
+    lineHeight: 16,
+    color: "var(--ink-soft)",
+    marginTop: 8,
   },
   scroll: {
     flex: 1,

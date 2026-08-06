@@ -7,28 +7,14 @@ import { PREGUNTAS, clasificar } from "./data/questions";
 import type { Answer, Diagnosis } from "./types";
 import "./App.css";
 
-// Primera letra en mayúscula de un texto, ej: "manuela" -> "M"
-function inicialMayuscula(texto: string): string {
-  const limpio = texto.trim();
-  if (!limpio) return "";
-  return limpio.charAt(0).toUpperCase();
-}
-
-// Construye el código: inicial del nombre + inicial del apellido + año.
-// Ej: nombre="Manuela", apellido="Rivera", anio="2002" -> "MR2002"
-function formatearCodigo(
-  nombre: string,
-  apellido: string,
-  anio: string,
-): string {
-  return `${inicialMayuscula(nombre)}${inicialMayuscula(apellido)}${anio.trim()}`;
-}
-
-function anioEsValido(anio: string): boolean {
-  if (!/^\d{4}$/.test(anio.trim())) return false;
-  const n = parseInt(anio.trim(), 10);
+// Valida que el código tenga la forma: 2 letras + año (4 dígitos),
+// ej: "MR2002", y que el año esté en un rango razonable.
+function codigoEsValido(codigo: string): boolean {
+  const match = /^[A-Za-z]{2}(\d{4})$/.exec(codigo.trim());
+  if (!match) return false;
+  const anio = parseInt(match[1], 10);
   const anioActual = new Date().getFullYear();
-  return n >= 1900 && n <= anioActual;
+  return anio >= 1900 && anio <= anioActual;
 }
 
 export default function App() {
@@ -36,9 +22,7 @@ export default function App() {
     new Array(PREGUNTAS.length).fill(null),
   );
   const [faltantes, setFaltantes] = useState<number[]>([]);
-  const [nombre, setNombre] = useState("");
-  const [apellido, setApellido] = useState("");
-  const [anioNacimiento, setAnioNacimiento] = useState("");
+  const [codigo, setCodigo] = useState("");
   const [camposFaltantes, setCamposFaltantes] = useState<string[]>([]);
   const [resultado, setResultado] = useState<Diagnosis | null>(null);
 
@@ -59,22 +43,10 @@ export default function App() {
     setFaltantes((prev) => prev.filter((i) => i !== index));
   };
 
-  const handleNombreChange = (value: string) => {
+  const handleCodigoChange = (value: string) => {
     if (yaRespondio) return;
-    setNombre(value);
-    setCamposFaltantes((prev) => prev.filter((c) => c !== "nombre"));
-  };
-
-  const handleApellidoChange = (value: string) => {
-    if (yaRespondio) return;
-    setApellido(value);
-    setCamposFaltantes((prev) => prev.filter((c) => c !== "apellido"));
-  };
-
-  const handleAnioNacimientoChange = (value: string) => {
-    if (yaRespondio) return;
-    setAnioNacimiento(value);
-    setCamposFaltantes((prev) => prev.filter((c) => c !== "anioNacimiento"));
+    setCodigo(value);
+    setCamposFaltantes((prev) => prev.filter((c) => c !== "codigo"));
   };
 
   const handleCalcular = async () => {
@@ -85,10 +57,8 @@ export default function App() {
       .filter((i) => i !== -1);
 
     const camposVacios: string[] = [];
-    if (!nombre.trim()) camposVacios.push("nombre");
-    if (!apellido.trim()) camposVacios.push("apellido");
-    if (!anioNacimiento.trim() || !anioEsValido(anioNacimiento)) {
-      camposVacios.push("anioNacimiento");
+    if (!codigo.trim() || !codigoEsValido(codigo)) {
+      camposVacios.push("codigo");
     }
 
     if (vacios.length > 0 || camposVacios.length > 0) {
@@ -113,15 +83,13 @@ export default function App() {
 
     const endpoint = import.meta.env.VITE_SHEET_ENDPOINT;
     if (endpoint) {
-      const codigo = formatearCodigo(nombre, apellido, anioNacimiento);
-
       try {
         await fetch(endpoint, {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain" },
           body: JSON.stringify({
-            nombre: codigo,
+            nombre: codigo.trim().toUpperCase(),
             respuestas,
             average: diagnostico.average,
             label: diagnostico.label,
@@ -154,12 +122,8 @@ export default function App() {
             camposFaltantes={camposFaltantes}
             onAnswer={handleAnswer}
             onCalcular={handleCalcular}
-            nombre={nombre}
-            apellido={apellido}
-            anioNacimiento={anioNacimiento}
-            onNombreChange={handleNombreChange}
-            onApellidoChange={handleApellidoChange}
-            onAnioNacimientoChange={handleAnioNacimientoChange}
+            codigo={codigo}
+            onCodigoChange={handleCodigoChange}
           />
         )}
         <Thermometer resultado={resultado} />

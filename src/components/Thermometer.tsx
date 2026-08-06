@@ -146,7 +146,7 @@ export default function Thermometer({ resultado }: Props) {
 
       {!resultado && (
         <Text style={styles.emptyState}>
-          Responde las 8 afirmaciones y presiona{" "}
+          Responde las 10 afirmaciones y presiona{" "}
           <Text style={{ fontWeight: "700" }}>Calcular Actitud</Text> para ver
           tu resultado.
         </Text>
